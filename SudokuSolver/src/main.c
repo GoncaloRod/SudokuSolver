@@ -9,21 +9,23 @@
 
 void main(int argc, char** argv)
 {
-	char* inputFileName, * outputFileName;
-	unsigned char* matrix = NULL;
+	char* pInputFileName, * pOutputFileName;
+	unsigned char* pMatrix = NULL;
 
+	// Validate arguments
 	if (argc != 3)
 	{
 		printf("Usage: %s input_file output_file", argv[0]);
 		return;
 	}
 
-	inputFileName = argv[1];
-	outputFileName = argv[2];
+	// Save arguments
+	pInputFileName = argv[1];
+	pOutputFileName = argv[2];
 
-	ReadFile(inputFileName, matrix);
+	ReadFile(pInputFileName, pMatrix);
 
 	// TODO: Solve
 
-	free(matrix);
+	free(pMatrix);
 }

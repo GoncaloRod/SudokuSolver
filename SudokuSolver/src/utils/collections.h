@@ -5,13 +5,13 @@
 
 typedef struct _listNode
 {
-	struct _listNode* next;
-	void* data;
+	struct _listNode* pNext;
+	void* pData;
 } ListNode;
 
 typedef struct _list
 {
-	ListNode* head, * tail;
+	ListNode* pHead, * pTail;
 	int count;
 } List;
 
@@ -19,11 +19,11 @@ List* CreateList();
 
 ListNode* CreateListNode();
 
-void FreeList(List* list, void (*FreeData)(void*));
+void FreeList(List* pList, void (*FreeData)(void*));
 
-void ListAddTail(List* list, void* data);
+void ListAddTail(List* pList, void* pData);
 
-void ListAddHead(List* list, void* data);
+void ListAddHead(List* pList, void* pData);
 
 #pragma endregion Lists
 
@@ -31,13 +31,13 @@ void ListAddHead(List* list, void* data);
 
 typedef struct _treeNode
 {
-	List* childs;
-	void* data;
+	List* pChilds;
+	void* pData;
 } TreeNode;
 
 TreeNode* CreateTreeNode();
 
-void FreeGeneralTree(TreeNode* root, void (*FreeData)(void*));
+void FreeGeneralTree(TreeNode* pRoot, void (*FreeData)(void*));
 
 #pragma endregion General Trees
 

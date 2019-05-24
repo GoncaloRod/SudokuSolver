@@ -1,80 +1,83 @@
 #include "collections.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #pragma region Lists
 
 List* CreateList()
 {
-	List* list = (List*)malloc(sizeof(List));
+	List* pList = (List*)malloc(sizeof(List));
 
-	if (!list) return NULL;
+	if (!pList) return NULL;
 
-	list->head = list->tail = NULL;
-	list->count = 0;
+	pList->pHead = pList->pTail = NULL;
+	pList->count = 0;
+
+	return pList;
 }
 
 ListNode* CreateListNode()
 {
-	ListNode* node = (ListNode*)malloc(sizeof(ListNode));
+	ListNode* pNode = (ListNode*)malloc(sizeof(ListNode));
 
-	if (!node) return NULL;
+	if (!pNode) return NULL;
 
-	node->next = NULL;
-	node->data = NULL;
+	pNode->pNext = NULL;
+	pNode->pData = NULL;
 
-	return node;
+	return pNode;
 }
 
-void FreeList(List* list, void (*FreeData)(void*))
+void FreeList(List* pList, void (*FreeData)(void*))
 {
-	if (!list) return;
-	if (!list->head) return;
+	if (!pList) return;
+	if (!pList->pHead) return;
 
-	for (ListNode* node = list->head, *next = node->next; node; node = next, next = node->next)
+	for (ListNode* node = pList->pHead, *next = node->pNext; node; node = next, next = node->pNext)
 	{
-		FreeData(node->data);
+		FreeData(node->pData);
 		free(node);
 	}
 
-	free(list);
+	free(pList);
 }
 
-void ListAddTail(List* list, void* data)
+void ListAddTail(List* pList, void* pData)
 {
-	if (!list) return;
+	if (!pList) return;
 
-	ListNode* node;
+	ListNode* pNode;
 
-	if (!list->head)
+	if (!pList->pHead)
 	{
-		ListAddHead(list, data);
+		ListAddHead(pList, pData);
 		return;
 	}
 
-	node = CreateListNode();
-	node->data = data;
+	pNode = CreateListNode();
+	pNode->pData = pData;
 
-	list->tail->next = node;
-	list->tail = node;
-	list->count++;
+	pList->pTail->pNext = pNode;
+	pList->pTail = pNode;
+	pList->count++;
 }
 
-void ListAddHead(List* list, void* data)
+void ListAddHead(List* pList, void* pData)
 {
-	if (!list) return;
+	if (!pList) return;
 
-	ListNode* node;
+	ListNode* pNode;
 
-	node = CreateListNode();
-	node->data = data;
+	pNode = CreateListNode();
+	pNode->pData = pData;
 
-	node->next = list->head;
-	list->head = node;
+	pNode->pNext = pList->pHead;
+	pList->pHead = pNode;
 
-	if (!list->tail) list->tail = node;
+	if (!pList->pTail) pList->pTail = pNode;
 
-	list->count++;
+	pList->count++;
 }
 
 #pragma endregion Lists
@@ -83,24 +86,24 @@ void ListAddHead(List* list, void* data)
 
 TreeNode* CreateTreeNode()
 {
-	TreeNode* node = CreateTreeNode();
+	TreeNode* pNode = CreateTreeNode();
 
-	node->childs = NULL;
-	node->data = NULL;
+	pNode->pChilds = NULL;
+	pNode->pData = NULL;
 
-	return node;
+	return pNode;
 }
 
-void FreeGeneralTree(TreeNode* root, void (*FreeData)(void*))
+void FreeGeneralTree(TreeNode* pRoot, void (*FreeData)(void*))
 {
-	if (!root) return;
+	if (!pRoot) return;
 
 	// Recursively free child nodes
-	FreeList(root->childs, FreeGeneralTree);
+	FreeList(pRoot->pChilds, FreeGeneralTree);
 
-	FreeData(root->data);
+	FreeData(pRoot->pData);
 
-	free(root);
+	free(pRoot);
 }
 
 #pragma endregion General Trees

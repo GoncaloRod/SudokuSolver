@@ -49,7 +49,7 @@ void ReadFile(char* fileName, unsigned char* matrix)
 				exit(EXIT_FAILURE);
 			}
 
-			matrix[i * 9 + j] = (unsigned char*)number;
+			matrix[i * 9 + j] = (unsigned char)number;
 		}
 	}
 
