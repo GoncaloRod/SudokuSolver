@@ -4,7 +4,7 @@
 
 #pragma region Lists
 
-List* CreateLinkedList()
+List* CreateList()
 {
 	List* list = (List*)malloc(sizeof(List));
 
@@ -14,7 +14,7 @@ List* CreateLinkedList()
 	list->count = 0;
 }
 
-ListNode* CreateLinkedListNode()
+ListNode* CreateListNode()
 {
 	ListNode* node = (ListNode*)malloc(sizeof(ListNode));
 
@@ -26,21 +26,21 @@ ListNode* CreateLinkedListNode()
 	return node;
 }
 
-void FreeLinkedList(List* list, void (*FreeData)(void*))
+void FreeList(List* list, void (*FreeData)(void*))
 {
 	if (!list) return;
 	if (!list->head) return;
 
 	for (ListNode* node = list->head, *next = node->next; node; node = next, next = node->next)
 	{
-		free(node->data);
+		FreeData(node->data);
 		free(node);
 	}
 
 	free(list);
 }
 
-void LinkedListAddTail(List* list, void* data)
+void ListAddTail(List* list, void* data)
 {
 	if (!list) return;
 
@@ -48,11 +48,11 @@ void LinkedListAddTail(List* list, void* data)
 
 	if (!list->head)
 	{
-		LinkedListAddHead(list, data);
+		ListAddHead(list, data);
 		return;
 	}
 
-	node = CreateLinkedListNode();
+	node = CreateListNode();
 	node->data = data;
 
 	list->tail->next = node;
@@ -60,13 +60,13 @@ void LinkedListAddTail(List* list, void* data)
 	list->count++;
 }
 
-void LinkedListAddHead(List* list, void* data)
+void ListAddHead(List* list, void* data)
 {
 	if (!list) return;
 
 	ListNode* node;
 
-	node = CreateLinkedListNode();
+	node = CreateListNode();
 	node->data = data;
 
 	node->next = list->head;
@@ -89,6 +89,18 @@ TreeNode* CreateTreeNode()
 	node->data = NULL;
 
 	return node;
+}
+
+void FreeGeneralTree(TreeNode* root, void (*FreeData)(void*))
+{
+	if (!root) return;
+
+	// Recursively free child nodes
+	FreeList(root->childs, FreeGeneralTree);
+
+	FreeData(root->data);
+
+	free(root);
 }
 
 #pragma endregion General Trees

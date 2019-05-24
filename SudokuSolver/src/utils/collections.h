@@ -15,15 +15,15 @@ typedef struct _list
 	int count;
 } List;
 
-List* CreateLinkedList();
+List* CreateList();
 
-ListNode* CreateLinkedListNode();
+ListNode* CreateListNode();
 
-void FreeLinkedList(List* list, void (*FreeData)(void*));
+void FreeList(List* list, void (*FreeData)(void*));
 
-void LinkedListAddTail(List* list, void* data);
+void ListAddTail(List* list, void* data);
 
-void LinkedListAddHead(List* list, void* data);
+void ListAddHead(List* list, void* data);
 
 #pragma endregion Lists
 
@@ -36,6 +36,8 @@ typedef struct _treeNode
 } TreeNode;
 
 TreeNode* CreateTreeNode();
+
+void FreeGeneralTree(TreeNode* root, void (*FreeData)(void*));
 
 #pragma endregion General Trees
 
