@@ -3,4 +3,6 @@
 void Solve(unsigned char* pMatrix)
 {
 	if (!pMatrix) return;
+
+	// TODO: Solve
 }

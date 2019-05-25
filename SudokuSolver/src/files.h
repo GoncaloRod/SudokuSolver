@@ -19,6 +19,8 @@
 #define FM_WBP "wb+"
 #define FM_ABP "ab+"
 
-void ReadFile(char* fileName, unsigned char* matrix);
+unsigned char* ReadFile(char* pFileName);
+
+void ExportFile(char* pFileName, unsigned char* pMatrix);
 
 #endif // !FILES_H_

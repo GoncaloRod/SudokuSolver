@@ -6,11 +6,12 @@
 
 #include "structs.h"
 #include "files.h"
+#include "solver.h"
 
 void main(int argc, char** argv)
 {
 	char* pInputFileName, * pOutputFileName;
-	unsigned char* pMatrix = NULL;
+	unsigned char* pMatrix;
 
 	// Validate arguments
 	if (argc != 3)
@@ -23,9 +24,11 @@ void main(int argc, char** argv)
 	pInputFileName = argv[1];
 	pOutputFileName = argv[2];
 
-	ReadFile(pInputFileName, pMatrix);
+	pMatrix =  ReadFile(pInputFileName);
 
-	// TODO: Solve
+	Solve(pMatrix);
+
+	ExportFile(pOutputFileName, pMatrix);
 
 	free(pMatrix);
 }

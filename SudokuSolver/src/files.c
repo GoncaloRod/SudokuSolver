@@ -8,28 +8,29 @@
 
 #include "structs.h"
 
-void ReadFile(char* fileName, unsigned char* matrix)
+unsigned char* ReadFile(char* pFileName)
 {
-	FILE* file;
+	FILE* pFile;
 	int number = 0;
+	unsigned char* pMatrix;
 	
 	// Open file
-	file = fopen(fileName, FM_R);
+	pFile = fopen(pFileName, FM_R);
 
-	if (!file)
+	if (!pFile)
 	{
-		PrintError("Failed to open file!");
+		PrintError("Failed to open input file!");
 		exit(EXIT_FAILURE);
 	}
 
 	// Allocate matrix
-	matrix = (unsigned char*)malloc(sizeof(unsigned char) * (9 * 9));
+	pMatrix = (unsigned char*)malloc(sizeof(unsigned char) * (9 * 9));
 
-	if (!matrix)
+	if (!pMatrix)
 	{
 		PrintError("Failed to allocate memory!");
 
-		fclose(file);
+		fclose(pFile);
 
 		exit(EXIT_FAILURE);
 	}
@@ -39,19 +40,48 @@ void ReadFile(char* fileName, unsigned char* matrix)
 	{
 		for (int j = 0; j < 9; ++j)
 		{
-			if (fscanf(file, "%d", &number) != 1)
+			if (fscanf(pFile, "%d", &number) != 1)
 			{
 				PrintError("Invalid file format! Missing numbers!");
 
-				fclose(file);
-				free(matrix);
+				fclose(pFile);
+				free(pMatrix);
 
 				exit(EXIT_FAILURE);
 			}
 
-			matrix[i * 9 + j] = (unsigned char)number;
+			pMatrix[i * 9 + j] = (unsigned char)number;
 		}
 	}
 
-	fclose(file);
+	fclose(pFile);
+
+	return pMatrix;
+}
+
+void ExportFile(char* pFileName, unsigned char* pMatrix)
+{
+	if (!pMatrix) return;
+
+	FILE* pFile;
+
+	// Open file
+	pFile = fopen(pFileName, FM_W);
+
+	if (!pFile)
+	{
+		PrintError("Failed to open output file!");
+		exit(EXIT_FAILURE);
+	}
+
+	// Write matrix to file
+	for (int i = 0; i < 9; ++i)
+	{
+		for (int j = 0; j < 9; ++j)
+		{
+			fprintf(pFile, "%d ", pMatrix[i * 9 + j]);
+		}
+
+		fprintf(pFile, "\n");
+	}
 }
