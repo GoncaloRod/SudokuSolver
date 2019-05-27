@@ -3,4 +3,6 @@
 
 void Solve(unsigned char* pMatrix, GeneralTreeNode* pHistoricalTree);
 
+void LineRule(unsigned char* pMatrix, List* pPossibilities, Vector2I position);
+
 #endif // !SOLVER_H_
