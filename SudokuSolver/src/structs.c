@@ -16,11 +16,34 @@ Vector2I* CreateVector2I()
 	return pVector;
 }
 
-void FreeVector2I(Vector2I* pVector)
+void FreeVector2I(void* pVector)
 {
 	if (!pVector) return;
 
-	free(pVector);
+	free((Vector2I*)pVector);
 }
 
-#pragma endregion
+#pragma endregion Vector2I
+
+#pragma region Action
+
+Action* CreateAction()
+{
+	Action* pAction = (Action*)malloc(sizeof(Action));
+
+	if (!pAction) return NULL;
+
+	pAction->number = 0;
+	pAction->position.x = pAction->position.y = 0;
+
+	return pAction;
+}
+
+void FreeAction(void* pAction)
+{
+	if (!pAction) return;
+
+	FreeAction((Action*)pAction);
+}
+
+#pragma endregion Action
