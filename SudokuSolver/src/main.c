@@ -10,6 +10,7 @@
 
 void main(int argc, char** argv)
 {
+	GeneralTreeNode* pHistoricalTree;
 	char* pInputFileName, * pOutputFileName;
 	unsigned char* pMatrix;
 
@@ -24,9 +25,13 @@ void main(int argc, char** argv)
 	pInputFileName = argv[1];
 	pOutputFileName = argv[2];
 
-	pMatrix =  ReadFile(pInputFileName);
+	// Create and init historical tree
+	pHistoricalTree = CreateGeneralTreeNode();
+	pHistoricalTree->pData = CreateAction();
 
-	Solve(pMatrix);
+	pMatrix = ReadFile(pInputFileName);
+
+	Solve(pMatrix, pHistoricalTree);
 
 	ExportFile(pOutputFileName, pMatrix);
 

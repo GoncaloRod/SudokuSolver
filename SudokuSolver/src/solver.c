@@ -1,6 +1,8 @@
 #include "solver.h"
 
-void Solve(unsigned char* pMatrix)
+#include "utils/collections.h"
+
+void Solve(unsigned char* pMatrix, GeneralTreeNode* pHistoricalTree)
 {
 	if (!pMatrix) return;
 
