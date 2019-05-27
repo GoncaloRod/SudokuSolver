@@ -80,6 +80,23 @@ void ListAddHead(List* pList, void* pData)
 	pList->count++;
 }
 
+void RemoveFromListIndex(List* pList, int index, void (*FreeData)(void*))
+{
+	if (!pList) return;
+	if (!pList->pHead) return;
+	if (pList->count - 1 < index) return;
+
+	ListNode* pNode = pList->pHead, * pToRemove;
+
+	for (int i = 0; i < index - 1; ++i, pNode = pNode->pNext);
+
+	pToRemove = pNode->pNext;
+	pNode->pNext = pToRemove->pNext;
+
+	FreeData(pToRemove->pData);
+	free(pToRemove);
+}
+
 #pragma endregion Lists
 
 #pragma region General Trees
