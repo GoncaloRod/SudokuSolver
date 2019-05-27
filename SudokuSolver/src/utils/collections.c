@@ -80,7 +80,7 @@ void ListAddHead(List* pList, void* pData)
 	pList->count++;
 }
 
-void RemoveFromListIndex(List* pList, int index, void (*FreeData)(void*))
+void ListRemoveByIndex(List* pList, int index, void (*FreeData)(void*))
 {
 	if (!pList) return;
 	if (!pList->pHead) return;
@@ -95,6 +95,16 @@ void RemoveFromListIndex(List* pList, int index, void (*FreeData)(void*))
 
 	FreeData(pToRemove->pData);
 	free(pToRemove);
+}
+
+void ListRemoveFromList(List* pList, List* pToRemove, void (*FreeData)(void*))
+{
+	if (!pList) return;
+	if (!pList->pHead) return;
+	if (!pToRemove) return;
+	if (!pToRemove->pHead) return;
+
+	// TODO: This function
 }
 
 #pragma endregion Lists
