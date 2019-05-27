@@ -29,15 +29,15 @@ void ListAddHead(List* pList, void* pData);
 
 #pragma region General Trees
 
-typedef struct _treeNode
+typedef struct _generalTreeNode
 {
 	List* pChilds;
 	void* pData;
-} TreeNode;
+} GeneralTreeNode;
 
-TreeNode* CreateTreeNode();
+GeneralTreeNode* CreateGeneralTreeNode();
 
-void FreeGeneralTree(TreeNode* pRoot, void (*FreeData)(void*));
+void FreeGeneralTree(GeneralTreeNode* pRoot, void (*FreeData)(void*));
 
 #pragma endregion General Trees
 

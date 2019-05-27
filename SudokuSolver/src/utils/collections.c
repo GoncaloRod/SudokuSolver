@@ -84,9 +84,9 @@ void ListAddHead(List* pList, void* pData)
 
 #pragma region General Trees
 
-TreeNode* CreateTreeNode()
+GeneralTreeNode* CreateGeneralTreeNode()
 {
-	TreeNode* pNode = CreateTreeNode();
+	GeneralTreeNode* pNode = CreateGeneralTreeNode();
 
 	pNode->pChilds = NULL;
 	pNode->pData = NULL;
@@ -94,7 +94,7 @@ TreeNode* CreateTreeNode()
 	return pNode;
 }
 
-void FreeGeneralTree(TreeNode* pRoot, void (*FreeData)(void*))
+void FreeGeneralTree(GeneralTreeNode* pRoot, void (*FreeData)(void*))
 {
 	if (!pRoot) return;
 
