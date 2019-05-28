@@ -81,10 +81,9 @@ int Solve(unsigned char* pMatrix, GeneralTreeNode* pHistoricalTree)
 	// Explore possibilities
 	for (ListNode* pNode = pHistoricalTree->pChilds->pHead; pNode; pNode = pNode->pNext)
 	{
-		Vector2I pos = ((Action*)((GeneralTreeNode*)pNode->pData)->pData)->position;
 		int num = ((Action*)((GeneralTreeNode*)pNode->pData)->pData)->number;
 
-		pMatrix[pos.y * 9 + pos.x] = num;
+		pMatrix[position.y * 9 + position.x] = num;
 
 		if (Solve(pMatrix, (GeneralTreeNode*)pNode->pData))
 		{
@@ -92,11 +91,11 @@ int Solve(unsigned char* pMatrix, GeneralTreeNode* pHistoricalTree)
 		}
 		else
 		{
-			pMatrix[pos.y * 9 + pos.x] = 0;
+			pMatrix[position.y * 9 + position.x] = 0;
 		}
 	}
 
-	FreeGeneralTree(pHistoricalTree, FreeAction);
+	//FreeGeneralTree(pHistoricalTree, FreeAction);
 
 	return 0;
 }

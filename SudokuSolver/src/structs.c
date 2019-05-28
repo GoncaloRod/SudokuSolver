@@ -43,7 +43,7 @@ void FreeAction(void* pAction)
 {
 	if (!pAction) return;
 
-	FreeAction((Action*)pAction);
+	free((Action*)pAction);
 }
 
 #pragma endregion Action
