@@ -96,9 +96,9 @@ GeneralTreeNode* CreateGeneralTreeNode()
 {
 	GeneralTreeNode* pNode = (GeneralTreeNode*)malloc(sizeof(GeneralTreeNode*));
 
-	if (!pNode) return;
+	if (!pNode) return NULL;
 
-	pNode->pChilds = NULL;
+	pNode->pChilds = CreateList();
 	pNode->pData = NULL;
 
 	return pNode;

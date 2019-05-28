@@ -7,7 +7,7 @@
 
 #include "structs.h"
 
-void Solve(unsigned char* pMatrix, GeneralTreeNode* pHistoricalTree);
+int Solve(unsigned char* pMatrix, GeneralTreeNode* pHistoricalTree);
 
 void LineRule(unsigned char* pMatrix, List* pPossibilities, Vector2I position);
 

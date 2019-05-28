@@ -31,7 +31,14 @@ void main(int argc, char** argv)
 
 	pMatrix = ReadFile(pInputFileName);
 
-	Solve(pMatrix, pHistoricalTree);
+	if (Solve(pMatrix, pHistoricalTree))
+	{
+
+	}
+	else
+	{
+		PrintInfo("No solution found!");
+	}
 
 	ExportFile(pOutputFileName, pMatrix);
 

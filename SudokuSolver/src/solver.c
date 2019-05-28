@@ -1,13 +1,18 @@
 #include "solver.h"
 
-void Solve(unsigned char* pMatrix, GeneralTreeNode* pHistoricalTree)
+int Solve(unsigned char* pMatrix, GeneralTreeNode* pHistoricalTree)
 {
 	if (!pMatrix) return;
 
 	Vector2I position;
 	List* pPossibilities;
+	GeneralTreeNode* pNewTreeNode;
+	Action* pNewAction;
 	int* pNumber;
 	int found = 0;
+
+	// Init position
+	position.x = position.y = -1;
 
 	// Init possibilities list
 	pPossibilities = CreateList();
@@ -16,7 +21,7 @@ void Solve(unsigned char* pMatrix, GeneralTreeNode* pHistoricalTree)
 	{
 		pNumber = (int*)malloc(sizeof(int));
 
-		if (!pNumber) return;
+		if (!pNumber) exit(EXIT_FAILURE);
 
 		*pNumber = i;
 
@@ -42,6 +47,12 @@ void Solve(unsigned char* pMatrix, GeneralTreeNode* pHistoricalTree)
 		if (found) break;
 	}
 
+	// No available spaces means the Sudoku is solved
+	if (position.x == -1 && position.y == -1)
+	{
+		return 1;
+	}
+
 	// Apply rules
 	LineRule(pMatrix, pPossibilities, position);
 
@@ -49,10 +60,45 @@ void Solve(unsigned char* pMatrix, GeneralTreeNode* pHistoricalTree)
 
 	SquareRule(pMatrix, pPossibilities, position);
 
-	// TODO: Create possibility nodes
+	// Create possibility nodes
+	for (ListNode* pNode = pPossibilities->pHead; pNode; pNode = pNode->pNext)
+	{
+		pNewTreeNode = CreateGeneralTreeNode();
+		pNewAction = CreateAction();
+
+		pNewAction->number = *(int*)pNode->pData;
+		pNewAction->position.x = position.x;
+		pNewAction->position.y = position.y;
+
+		pNewTreeNode->pData = pNewAction;
+
+		ListAddTail(pHistoricalTree->pChilds, (void*)pNewTreeNode);
+	}
 
 	// Free possibilities list
 	FreeList(pPossibilities, free);
+
+	// Explore possibilities
+	for (ListNode* pNode = pHistoricalTree->pChilds->pHead; pNode; pNode = pNode->pNext)
+	{
+		Vector2I pos = ((Action*)((GeneralTreeNode*)pNode->pData)->pData)->position;
+		int num = ((Action*)((GeneralTreeNode*)pNode->pData)->pData)->number;
+
+		pMatrix[pos.y * 9 + pos.x] = num;
+
+		if (Solve(pMatrix, (GeneralTreeNode*)pNode->pData))
+		{
+			return 1;
+		}
+		else
+		{
+			pMatrix[pos.y * 9 + pos.x] = 0;
+		}
+	}
+
+	FreeGeneralTree(pHistoricalTree, FreeAction);
+
+	return 0;
 }
 
 void LineRule(unsigned char* pMatrix, List* pPossibilities, Vector2I position)
@@ -101,27 +147,38 @@ void ColumnRule(unsigned char* pMatrix, List* pPossibilities, Vector2I position)
 	if (!pPossibilities) return;
 	if (!pPossibilities->pHead) return;
 
-	List* pExisting = CreateList();
-	int* pNumber;
+	int number;
 
 	// Find number in column
 	for (int i = 0; i < 9; ++i)
 	{
-		if (pMatrix[i * 9 + position.x] != 0)
+		number = pMatrix[i * 9 + position.x];
+
+		if (number != 0)
 		{
-			pNumber = (int*)malloc(sizeof(int));
+			for (ListNode* pCurrent = pPossibilities->pHead, *pPrevious = NULL; pCurrent; pPrevious = pCurrent, pCurrent = pCurrent->pNext)
+			{
+				if (*(int*)pCurrent->pData == number)
+				{
+					if (!pPrevious)
+					{
+						pPossibilities->pHead = pCurrent->pNext;
+					}
+					else
+					{
+						pPrevious->pNext = pCurrent->pNext;
+					}
 
-			if (!pNumber) return;
+					free((int*)pCurrent->pData);
+					free(pCurrent);
 
-			*pNumber = pMatrix[i * 9 + position.x];
+					pPossibilities->count--;
 
-			ListAddTail(pExisting, (void*)pNumber);
+					break;
+				}
+			}
 		}
 	}
-
-	// TODO: Remove existing from list
-
-	FreeList(pExisting, free);
 }
 
 void SquareRule(unsigned char* pMatrix, List* pPossibilities, Vector2I position)
@@ -130,28 +187,39 @@ void SquareRule(unsigned char* pMatrix, List* pPossibilities, Vector2I position)
 	if (!pPossibilities) return;
 	if (!pPossibilities->pHead) return;
 
-	List* pExisting = CreateList();
-	int* pNumber;
+	int number;
 
 	// Find numbers in square
 	for (int i = position.y - (position.y % 3); i < position.y - (position.y % 3) + 3; ++i)
 	{
 		for (int j = position.x - (position.x % 3); j < position.x - (position.x % 3) + 3; ++j)
 		{
-			if (pMatrix[i * 9 + j] != 0)
+			number = pMatrix[i * 9 + j];
+
+			if (number != 0)
 			{
-				pNumber = (int*)malloc(sizeof(int));
+				for (ListNode* pCurrent = pPossibilities->pHead, *pPrevious = NULL; pCurrent; pPrevious = pCurrent, pCurrent = pCurrent->pNext)
+				{
+					if (*(int*)pCurrent->pData == number)
+					{
+						if (!pPrevious)
+						{
+							pPossibilities->pHead = pCurrent->pNext;
+						}
+						else
+						{
+							pPrevious->pNext = pCurrent->pNext;
+						}
 
-				if (!pNumber) return;
+						free((int*)pCurrent->pData);
+						free(pCurrent);
 
-				*pNumber = pMatrix[i * 9 + j];
+						pPossibilities->count--;
 
-				ListAddTail(pExisting, pNumber);
+						break;
+					}
+				}
 			}
 		}
 	}
-
-	// TODO: Remove existing from list
-
-	FreeList(pExisting, free);
 }
