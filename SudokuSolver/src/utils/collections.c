@@ -32,12 +32,20 @@ ListNode* CreateListNode()
 void FreeList(List* pList, void (*FreeData)(void*))
 {
 	if (!pList) return;
-	if (!pList->pHead) return;
 
-	for (ListNode* node = pList->pHead, *next = node->pNext; node; node = next, next = node->pNext)
+	ListNode* pNode, * pNext;
+
+	pNode = pList->pHead;
+	pNext = NULL;
+
+	while (pNode)
 	{
-		FreeData(node->pData);
-		free(node);
+		pNode = pNode->pNext;
+
+		FreeData(pNode->pData);
+		free(pNode);
+
+		pNode = pNext;
 	}
 
 	free(pList);
@@ -80,40 +88,15 @@ void ListAddHead(List* pList, void* pData)
 	pList->count++;
 }
 
-void ListRemoveByIndex(List* pList, int index, void (*FreeData)(void*))
-{
-	if (!pList) return;
-	if (!pList->pHead) return;
-	if (pList->count - 1 < index) return;
-
-	ListNode* pNode = pList->pHead, * pToRemove;
-
-	for (int i = 0; i < index - 1; ++i, pNode = pNode->pNext);
-
-	pToRemove = pNode->pNext;
-	pNode->pNext = pToRemove->pNext;
-
-	FreeData(pToRemove->pData);
-	free(pToRemove);
-}
-
-void ListRemoveFromList(List* pList, List* pToRemove, void (*FreeData)(void*))
-{
-	if (!pList) return;
-	if (!pList->pHead) return;
-	if (!pToRemove) return;
-	if (!pToRemove->pHead) return;
-
-	// TODO: This function
-}
-
 #pragma endregion Lists
 
 #pragma region General Trees
 
 GeneralTreeNode* CreateGeneralTreeNode()
 {
-	GeneralTreeNode* pNode = CreateGeneralTreeNode();
+	GeneralTreeNode* pNode = (GeneralTreeNode*)malloc(sizeof(GeneralTreeNode*));
+
+	if (!pNode) return;
 
 	pNode->pChilds = NULL;
 	pNode->pData = NULL;

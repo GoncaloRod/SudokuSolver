@@ -25,10 +25,6 @@ void ListAddTail(List* pList, void* pData);
 
 void ListAddHead(List* pList, void* pData);
 
-void ListRemoveByIndex(List* pList, int index, void (*FreeData)(void*));
-
-void ListRemoveFromList(List* pList, List* pToRemove, void (*FreeData)(void*));
-
 #pragma endregion Lists
 
 #pragma region General Trees
