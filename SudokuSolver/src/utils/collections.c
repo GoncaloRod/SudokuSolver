@@ -40,7 +40,7 @@ void FreeList(List* pList, void (*FreeData)(void*))
 
 	while (pNode)
 	{
-		pNode = pNode->pNext;
+		pNext = pNode->pNext;
 
 		FreeData(pNode->pData);
 		free(pNode);
