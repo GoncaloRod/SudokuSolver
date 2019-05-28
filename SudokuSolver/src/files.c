@@ -1,13 +1,5 @@
 #include "files.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "utils/utils.h"
-#include "utils/collections.h"
-
-#include "structs.h"
-
 unsigned char* ReadFile(char* pFileName)
 {
 	FILE* pFile;

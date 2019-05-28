@@ -19,6 +19,14 @@
 #define FM_WBP "wb+"
 #define FM_ABP "ab+"
 
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "utils/utils.h"
+#include "utils/collections.h"
+
+#include "structs.h"
+
 unsigned char* ReadFile(char* pFileName);
 
 void ExportFile(char* pFileName, unsigned char* pMatrix);
