@@ -24,7 +24,7 @@ void main(int argc, char** argv)
 {
 #if 0
 	// Find memory leak, set to 1 to use
-	_CrtSetBreakAlloc(99);
+	_CrtSetBreakAlloc(126);
 #endif
 
 	GeneralTreeNode* pHistoricalTree;
@@ -48,20 +48,18 @@ void main(int argc, char** argv)
 
 	pMatrix = ReadFile(pInputFileName);
 
-	if (Solve(pMatrix, pHistoricalTree))
-	{
-
-	}
-	else
+	if (!Solve(pMatrix, pHistoricalTree))
 	{
 		PrintInfo("No solution found!");
 	}
 
-	ExportFile(pOutputFileName, pMatrix);
-
 	FreeGeneralTree(pHistoricalTree, FreeAction);
+
+	ExportFile(pOutputFileName, pMatrix);
 
 	free(pMatrix);
 
+#ifdef _DEBUG
 	_CrtDumpMemoryLeaks();
+#endif // DEBUG
 }

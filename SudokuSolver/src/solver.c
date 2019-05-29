@@ -14,20 +14,6 @@ int Solve(unsigned char* pMatrix, GeneralTreeNode* pHistoricalTree)
 	// Init position
 	position.x = position.y = -1;
 
-	// Init possibilities list
-	pPossibilities = CreateList();
-
-	for (int i = 1; i <= 9; ++i)
-	{
-		pNumber = (int*)malloc(sizeof(int));
-
-		if (!pNumber) exit(EXIT_FAILURE);
-
-		*pNumber = i;
-
-		ListAddTail(pPossibilities, (void*)pNumber);
-	}
-
 	// Find available position
 	for (int i = 0; i < 9; ++i)
 	{
@@ -53,12 +39,32 @@ int Solve(unsigned char* pMatrix, GeneralTreeNode* pHistoricalTree)
 		return 1;
 	}
 
+	// Init possibilities list
+	pPossibilities = CreateList();
+
+	for (int i = 1; i <= 9; ++i)
+	{
+		pNumber = (int*)malloc(sizeof(int));
+
+		if (!pNumber) exit(EXIT_FAILURE);
+
+		*pNumber = i;
+
+		ListAddTail(pPossibilities, (void*)pNumber);
+	}
+
 	// Apply rules
 	LineRule(pMatrix, pPossibilities, position);
 
 	ColumnRule(pMatrix, pPossibilities, position);
 
 	SquareRule(pMatrix, pPossibilities, position);
+
+	if (!pPossibilities->pHead)
+	{
+		FreeList(pPossibilities, free);
+		return 0;
+	}
 
 	// Create possibility nodes
 	for (ListNode* pNode = pPossibilities->pHead; pNode; pNode = pNode->pNext)
@@ -94,8 +100,6 @@ int Solve(unsigned char* pMatrix, GeneralTreeNode* pHistoricalTree)
 			pMatrix[position.y * 9 + position.x] = 0;
 		}
 	}
-
-	//FreeGeneralTree(pHistoricalTree, FreeAction);
 
 	return 0;
 }

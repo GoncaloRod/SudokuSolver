@@ -94,7 +94,7 @@ void ListAddHead(List* pList, void* pData)
 
 GeneralTreeNode* CreateGeneralTreeNode()
 {
-	GeneralTreeNode* pNode = (GeneralTreeNode*)malloc(sizeof(GeneralTreeNode*));
+	GeneralTreeNode* pNode = (GeneralTreeNode*)malloc(sizeof(GeneralTreeNode));
 
 	if (!pNode) return NULL;
 
@@ -109,7 +109,23 @@ void FreeGeneralTree(GeneralTreeNode* pRoot, void (*FreeData)(void*))
 	if (!pRoot) return;
 
 	// Recursively free child nodes
-	FreeList(pRoot->pChilds, FreeGeneralTree);
+	ListNode* pNode, * pNext;
+
+	pNode = pRoot->pChilds->pHead;
+	pNext = NULL;
+
+	while (pNode)
+	{
+		pNext = pNode->pNext;
+
+		FreeGeneralTree((GeneralTreeNode*)pNode->pData, FreeData);
+
+		free(pNode);
+
+		pNode = pNext;
+	}
+
+	free(pRoot->pChilds);
 
 	FreeData(pRoot->pData);
 
