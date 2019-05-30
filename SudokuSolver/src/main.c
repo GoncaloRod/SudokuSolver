@@ -2,10 +2,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <crtdbg.h>
 
 #include "utils/utils.h"
-
 #include "utils/collections.h"
 
 #include "structs.h"
@@ -28,6 +28,7 @@ void main(int argc, char** argv)
 #endif
 
 	GeneralTreeNode* pHistoricalTree;
+	clock_t start, end;
 	char* pInputFileName, * pOutputFileName;
 	unsigned char* pMatrix;
 
@@ -48,7 +49,17 @@ void main(int argc, char** argv)
 
 	pMatrix = ReadFile(pInputFileName);
 
-	if (!Solve(pMatrix, pHistoricalTree))
+	start = clock();
+
+	PrintInfo("Solving %s", pInputFileName);
+
+	if (Solve(pMatrix, pHistoricalTree))
+	{
+		end = clock();
+
+		PrintInfo("%s solved in %f seconds", pInputFileName, ExecutionTime(start, end));
+	}
+	else
 	{
 		PrintInfo("No solution found!");
 	}
