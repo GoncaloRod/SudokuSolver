@@ -34,7 +34,7 @@ void main(int argc, char** argv)
 	// Validate arguments
 	if (argc != 3)
 	{
-		printf("Usage: %s input_file output_file", argv[0]);
+		printf("\nUsage: %s input_file output_file\n", argv[0]);
 		return;
 	}
 
